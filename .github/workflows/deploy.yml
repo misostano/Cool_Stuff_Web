@@ -1,0 +1,74 @@
+# =============================================================================
+# .github/workflows/deploy.yml  –  v0.2.0
+# Po každom nahraní zmien do vetvy main web zbuilduje, skontroluje a zverejní
+# na GitHub Pages.  Jednorazové nastavenie: Settings -> Pages -> Source: GitHub Actions.
+# Verzie akcií (v4, v5 …) občas rastú; ak GitHub upozorní na zastaranú, zvýšte číslo.
+# =============================================================================
+name: Nasadenie na GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch: # umožní spustiť ručne z karty Actions
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Stiahnutie kódu
+        uses: actions/checkout@v4
+
+      - name: Nastavenie Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: Zistenie adresy webu (aj pre vlastnú doménu)
+        id: pages
+        uses: actions/configure-pages@v5
+
+      - name: Inštalácia závislostí
+        run: npm ci
+
+      - name: Kontrola kontrastu farieb
+        run: npm run check:contrast
+
+      - name: Build a kontrola výstupu
+        run: npm run build
+        env:
+          SITE_URL: ${{ steps.pages.outputs.base_url }}
+
+      - name: Archivácia logov buildu
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-logy
+          path: logs/
+          retention-days: 14
+          if-no-files-found: ignore
+
+      - name: Príprava výstupu pre Pages
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Zverejnenie
+        id: deployment
+        uses: actions/deploy-pages@v4
