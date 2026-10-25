@@ -1,0 +1,15 @@
+---
+# Stránka jedného tagu – generuje sa pre každý tag v každom jazyku.
+layout: layouts/tag.njk
+kind: tag
+eleventyExcludeFromCollections: true
+pagination:
+  data: collections.tagPages
+  size: 1
+  alias: T
+permalink: "{{ T.url }}"
+eleventyComputed:
+  lang: "{{ T.lang }}"
+  title: "{{ ui[T.lang].tagTitle | fmt({ tag: T.label }) }}"
+  description: "{{ site.description[T.lang] }}"
+---

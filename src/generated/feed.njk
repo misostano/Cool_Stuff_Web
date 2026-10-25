@@ -1,0 +1,29 @@
+---
+# Kanál noviniek (Atom) – jeden pre každý jazyk: /feed.xml a /en/feed.xml
+eleventyExcludeFromCollections: true
+pagination:
+  data: collections.langPages
+  size: 1
+  alias: L
+permalink: "{{ L.feedUrl }}"
+---
+{%- set posts = latestPosts(L.lang, site.feedItems) -%}
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="{{ L.lang }}">
+  <title>{{ site.name[L.lang] }}</title>
+  <subtitle>{{ site.description[L.lang] }}</subtitle>
+  <link href="{{ site.url }}{{ L.feedUrl }}" rel="self" type="application/atom+xml"/>
+  <link href="{{ site.url }}{{ L.homeUrl }}" rel="alternate" type="text/html"/>
+  <id>{{ site.url }}{{ L.homeUrl }}</id>
+  <updated>{{ (posts[0].date if posts.length else page.date) | isoFull }}</updated>
+  <author><name>{{ site.author }}</name></author>
+{%- for p in posts %}
+  <entry>
+    <title>{{ p.title }}</title>
+    <link href="{{ site.url }}{{ p.url }}" rel="alternate" type="text/html"/>
+    <id>{{ site.url }}{{ p.url }}</id>
+    <updated>{{ p.date | isoFull }}</updated>
+    <summary>{{ p.description }}</summary>
+  </entry>
+{%- endfor %}
+</feed>

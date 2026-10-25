@@ -1,0 +1,21 @@
+---
+layout: layouts/base.njk
+---
+{%- from "partials/macros.njk" import postList -%}
+{%- set t = ui[lang] -%}
+<div class="wrap layout">
+  <main id="obsah" class="main">
+    <nav class="crumbs" aria-label="{{ t.breadcrumb }}">
+      <ol>
+        <li><a href="{{ homeUrl(lang) }}">{{ t.home }}</a></li>
+        <li><a href="{{ tagsUrl(lang) }}">{{ t.tags }}</a></li>
+        <li><span aria-current="page">{{ T.label }}</span></li>
+      </ol>
+    </nav>
+    <header class="page-head">
+      <h1>{{ t.tagTitle | fmt({ tag: T.label }) }}</h1>
+      <p class="lead">{{ T.count }} {{ T.count | plural(t.postForms, lang) }}</p>
+    </header>
+    {{ postList(T.posts, t, lang, true) }}
+  </main>
+</div>

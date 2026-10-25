@@ -1,0 +1,15 @@
+---
+# Zoznam všetkých tagov – jedna stránka pre každý jazyk.
+layout: layouts/tags-index.njk
+kind: tags
+eleventyExcludeFromCollections: true
+pagination:
+  data: collections.langPages
+  size: 1
+  alias: L
+permalink: "{{ L.tagsUrl }}"
+eleventyComputed:
+  lang: "{{ L.lang }}"
+  title: "{{ ui[L.lang].tagsTitle }}"
+  description: "{{ ui[L.lang].tagsLead }}"
+---

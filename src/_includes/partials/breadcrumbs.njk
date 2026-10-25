@@ -1,0 +1,15 @@
+{#- Omrvinková navigácia. Vyžaduje premenné: t, lang, me (záznam aktuálnej stránky). -#}
+{%- if me and me.section %}
+<nav class="crumbs" aria-label="{{ t.breadcrumb }}">
+  <ol>
+    <li><a href="{{ homeUrl(lang) }}">{{ t.home }}</a></li>
+    <li>{% if me.kind == 'section' or me.kind == 'page' %}<span aria-current="page">{{ me.section.title }}</span>{% else %}<a href="{{ me.section.url }}">{{ me.section.title }}</a>{% endif %}</li>
+    {%- if me.sub %}
+    <li>{% if me.kind == 'subsection' %}<span aria-current="page">{{ me.sub.title }}</span>{% else %}<a href="{{ me.sub.url }}">{{ me.sub.title }}</a>{% endif %}</li>
+    {%- endif %}
+    {%- if me.kind == 'post' %}
+    <li><span aria-current="page">{{ me.title }}</span></li>
+    {%- endif %}
+  </ol>
+</nav>
+{%- endif %}

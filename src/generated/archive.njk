@@ -1,0 +1,15 @@
+---
+# Archív príspevkov – jedna strana archívu pre každý jazyk (generuje sa automaticky).
+layout: layouts/archive.njk
+kind: archive
+eleventyExcludeFromCollections: true
+pagination:
+  data: collections.archivePages
+  size: 1
+  alias: A
+permalink: "{{ A.url }}"
+eleventyComputed:
+  lang: "{{ A.lang }}"
+  title: "{{ ui[A.lang].archiveTitle }}{% if A.number > 1 %} – {{ ui[A.lang].pageOf | fmt({ n: A.number, total: A.total }) }}{% endif %}"
+  description: "{{ site.description[A.lang] }}"
+---

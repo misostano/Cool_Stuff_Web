@@ -1,0 +1,16 @@
+---
+permalink: /sitemap.xml
+eleventyExcludeFromCollections: true
+---
+{%- set urls = sitemapUrls() -%}
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
+{%- for u in urls %}
+  <url>
+    <loc>{{ site.url }}{{ u.url }}</loc>
+    {%- for a in u.alternates %}
+    <xhtml:link rel="alternate" hreflang="{{ a.lang }}" href="{{ site.url }}{{ a.url }}"/>
+    {%- endfor %}
+  </url>
+{%- endfor %}
+</urlset>

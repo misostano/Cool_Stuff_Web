@@ -1,0 +1,50 @@
+---
+layout: layouts/base.njk
+---
+{%- from "partials/macros.njk" import tagChips -%}
+{%- set t = ui[lang] -%}
+{%- set me = entryOf(page.url) -%}
+{%- set headings = content | tocItems -%}
+{%- set nb = neighbors(page.url) -%}
+<div class="wrap layout has-aside">
+  <main id="obsah" class="main acc-{{ me.accent }}">
+    {% include "partials/breadcrumbs.njk" %}
+    <article>
+      <header class="page-head accent-head">
+        <h1>{{ title }}</h1>
+        <p class="post-meta">
+          <span>{{ t.published }}: <time datetime="{{ me.date | isoDate }}">{{ me.date | dateFmt(lang) }}</time></span>
+          {%- if me.sub %}
+          <span class="where"><a href="{{ me.sub.url }}">{{ me.sub.title }}</a></span>
+          {%- endif %}
+        </p>
+        {%- if description %}
+        <p class="lead">{{ description }}</p>
+        {%- endif %}
+        {{ tagChips(me.tags, lang) }}
+      </header>
+      {%- if toc and headings.length > 1 %}
+      <nav class="toc" aria-label="{{ t.toc }}">
+        <h2>{{ t.toc }}</h2>
+        <ol>
+          {%- for h in headings %}
+          <li class="toc-l{{ h.level }}"><a href="#{{ h.id }}">{{ h.text }}</a></li>
+          {%- endfor %}
+        </ol>
+      </nav>
+      {%- endif %}
+      <div class="prose">{{ content | addHeadingIds | safe }}</div>
+    </article>
+    {%- if nb.older or nb.newer %}
+    <nav class="prevnext" aria-label="{{ t.prevNext }}">
+      {%- if nb.newer %}
+      <a class="btn" rel="next" href="{{ nb.newer.url }}"><span class="dir">← {{ t.newerPost }}</span> {{ nb.newer.title }}</a>
+      {%- endif %}
+      {%- if nb.older %}
+      <a class="btn" rel="prev" href="{{ nb.older.url }}"><span class="dir">{{ t.olderPost }} →</span> {{ nb.older.title }}</a>
+      {%- endif %}
+    </nav>
+    {%- endif %}
+  </main>
+  {% include "partials/sidebar.njk" %}
+</div>

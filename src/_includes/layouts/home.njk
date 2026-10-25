@@ -1,0 +1,23 @@
+---
+layout: layouts/base.njk
+---
+{%- from "partials/macros.njk" import tileGrid -%}
+{%- set t = ui[lang] -%}
+<div class="wrap layout">
+  <main id="obsah" class="main">
+    <header class="page-head">
+      <h1>{{ site.name[lang] }}</h1>
+      <p class="lead">{{ site.description[lang] }}</p>
+    </header>
+    {%- if content | trim %}
+    <div class="prose">{{ content | safe }}</div>
+    {%- endif %}
+    <h2 class="visually-hidden">{{ t.homeIntroTitle }}</h2>
+    {{ tileGrid(sectionsOf(lang), t, lang) }}
+    <p class="home-links">
+      <a href="{{ archiveUrl(lang) }}">{{ t.archive }}</a> ·
+      <a href="{{ tagsUrl(lang) }}">{{ t.tags }}</a> ·
+      <a href="{{ feedUrl(lang) }}">{{ t.feed }}</a>
+    </p>
+  </main>
+</div>

@@ -1,0 +1,48 @@
+{#- Základný rám všetkých stránok: <head>, hlavička, päta. Obsah dodávajú ostatné layouty. -#}
+{%- set t = ui[lang] -%}
+{%- set links = switchLinks(page.url, lang) -%}
+{%- set hreflangs = hreflangLinks(page.url, lang) -%}
+{%- set pageTitle = (site.name[lang] ~ ' · ' ~ site.tagline[lang]) if kind == 'home' else (title ~ ' · ' ~ site.name[lang]) -%}
+{%- set pageDescription = description or site.description[lang] -%}
+<!doctype html>
+<html lang="{{ lang }}">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>{{ pageTitle }}</title>
+<meta name="description" content="{{ pageDescription }}">
+<link rel="canonical" href="{{ site.url }}{{ page.url }}">
+{%- for a in hreflangs %}
+<link rel="alternate" hreflang="{{ a.lang }}" href="{{ site.url }}{{ a.url }}">
+{%- endfor %}
+{%- for a in hreflangs %}{% if a.lang == site.defaultLang %}
+<link rel="alternate" hreflang="x-default" href="{{ site.url }}{{ a.url }}">
+{%- endif %}{% endfor %}
+<link rel="alternate" type="application/atom+xml" href="{{ feedUrl(lang) }}" title="{{ site.name[lang] }}">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+{%- if site.features.openGraph %}
+<meta property="og:site_name" content="{{ site.name[lang] }}">
+<meta property="og:title" content="{{ title if kind != 'home' else site.name[lang] }}">
+<meta property="og:description" content="{{ pageDescription }}">
+<meta property="og:type" content="{{ 'article' if kind == 'post' else 'website' }}">
+<meta property="og:url" content="{{ site.url }}{{ page.url }}">
+<meta property="og:locale" content="{{ langInfo(lang).ogLocale }}">
+{%- for a in hreflangs %}{% if a.lang != lang %}
+<meta property="og:locale:alternate" content="{{ langInfo(a.lang).ogLocale }}">
+{%- endif %}{% endfor %}
+{%- endif %}
+<script>{{ "assets/js/theme-init.js" | inlineFile | safe }}</script>
+<style>{{ themeCss() | safe }}{{ "assets/css/main.css" | inlineFile | safe }}</style>
+{%- if site.features.printStyles %}
+<style media="print">{{ "assets/css/print.css" | inlineFile | safe }}</style>
+{%- endif %}
+</head>
+<body>
+<a class="skip" href="#obsah">{{ t.skip }}</a>
+{% include "partials/header.njk" %}
+{{ content | safe }}
+{% include "partials/footer.njk" %}
+<script>{{ "assets/js/theme-toggle.js" | inlineFile | safe }}</script>
+</body>
+</html>

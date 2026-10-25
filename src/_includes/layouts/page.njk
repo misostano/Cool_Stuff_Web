@@ -1,0 +1,18 @@
+---
+layout: layouts/base.njk
+---
+{%- set t = ui[lang] -%}
+{%- set me = entryOf(page.url) -%}
+<div class="wrap layout">
+  <main id="obsah" class="main acc-{{ me.accent }}">
+    {% include "partials/breadcrumbs.njk" %}
+    <header class="page-head accent-head">
+      <p class="eyebrow"><span class="num" aria-hidden="true">{{ me.badge }}</span></p>
+      <h1>{{ title }}</h1>
+      {%- if description %}
+      <p class="lead">{{ description }}</p>
+      {%- endif %}
+    </header>
+    <div class="prose">{{ content | safe }}</div>
+  </main>
+</div>

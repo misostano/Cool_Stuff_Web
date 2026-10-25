@@ -1,0 +1,34 @@
+---
+layout: layouts/base.njk
+---
+{%- from "partials/macros.njk" import tileGrid, postList -%}
+{%- set t = ui[lang] -%}
+{%- set me = entryOf(page.url) -%}
+{%- set subs = subsectionsOf(lang, me.sectionSlug) -%}
+{%- set direct = postsDirect(lang, me.sectionSlug) -%}
+<div class="wrap layout has-aside">
+  <main id="obsah" class="main acc-{{ me.accent }}">
+    {% include "partials/breadcrumbs.njk" %}
+    <header class="page-head accent-head">
+      <p class="eyebrow"><span class="num" aria-hidden="true">{{ me.badge }}</span></p>
+      <h1>{{ title }}</h1>
+      {%- if description %}
+      <p class="lead">{{ description }}</p>
+      {%- endif %}
+    </header>
+    {%- if content | trim %}
+    <div class="prose">{{ content | safe }}</div>
+    {%- endif %}
+    {%- if subs.length %}
+    <h2>{{ t.subsections }}</h2>
+    {{ tileGrid(subs, t, lang) }}
+    {%- endif %}
+    {%- if direct.length %}
+    <h2>{{ t.postsDirect if subs.length else t.postsHere }}</h2>
+    {{ postList(direct, t, lang, false) }}
+    {%- elif not subs.length %}
+    <p class="empty">{{ t.noPosts }}</p>
+    {%- endif %}
+  </main>
+  {% include "partials/sidebar.njk" %}
+</div>

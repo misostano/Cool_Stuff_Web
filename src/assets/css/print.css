@@ -1,0 +1,47 @@
+/* =============================================================================
+   src/assets/css/print.css  –  v0.2.0
+   Štýl pre tlač (vypnete ho v src/_data/site.js: features.printStyles = false).
+   ============================================================================= */
+html {
+  font-size: 11pt;
+}
+body,
+.tile,
+.toc {
+  background: #fff !important;
+  color: #000 !important;
+}
+.site-header,
+.site-footer,
+.aside,
+.prevnext,
+.pager,
+.skip,
+.btn,
+.langs {
+  display: none !important;
+}
+.layout {
+  display: block;
+  padding: 0;
+}
+.prose {
+  max-width: none;
+}
+a {
+  color: #000 !important;
+}
+.prose a[href^="http"]::after {
+  content: " (" attr(href) ")";
+  font-size: 0.85em;
+}
+.table-wrap {
+  overflow: visible;
+}
+h1,
+h2,
+h3,
+img,
+table {
+  break-inside: avoid;
+}

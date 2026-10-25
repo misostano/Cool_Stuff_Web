@@ -1,0 +1,29 @@
+---
+layout: layouts/base.njk
+---
+{%- from "partials/macros.njk" import postList -%}
+{%- set t = ui[lang] -%}
+{%- set me = entryOf(page.url) -%}
+{%- set posts = postsInSub(lang, me.sectionSlug, me.subSlug) -%}
+<div class="wrap layout has-aside">
+  <main id="obsah" class="main acc-{{ me.accent }}">
+    {% include "partials/breadcrumbs.njk" %}
+    <header class="page-head accent-head">
+      <p class="eyebrow"><span class="num" aria-hidden="true">{{ me.badge }}</span></p>
+      <h1>{{ title }}</h1>
+      {%- if description %}
+      <p class="lead">{{ description }}</p>
+      {%- endif %}
+    </header>
+    {%- if content | trim %}
+    <div class="prose">{{ content | safe }}</div>
+    {%- endif %}
+    {%- if posts.length %}
+    <h2>{{ t.postsHere }}</h2>
+    {{ postList(posts, t, lang, false) }}
+    {%- else %}
+    <p class="empty">{{ t.noPosts }}</p>
+    {%- endif %}
+  </main>
+  {% include "partials/sidebar.njk" %}
+</div>

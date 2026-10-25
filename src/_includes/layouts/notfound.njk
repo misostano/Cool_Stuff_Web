@@ -1,0 +1,17 @@
+---
+layout: layouts/base.njk
+---
+{%- set t = ui[lang] -%}
+<div class="wrap layout">
+  <main id="obsah" class="main">
+    <header class="page-head">
+      <h1>{{ t.notFoundTitle }}</h1>
+      <p class="lead">{{ t.notFoundText }}</p>
+    </header>
+    <ul class="chips chips-big">
+      {%- for L in site.languages %}
+      <li><a class="chip" href="{{ homeUrl(L.code) }}" lang="{{ L.code }}">{{ L.label }}</a></li>
+      {%- endfor %}
+    </ul>
+  </main>
+</div>

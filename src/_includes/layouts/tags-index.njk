@@ -1,0 +1,22 @@
+---
+layout: layouts/base.njk
+---
+{%- set t = ui[lang] -%}
+{%- set tags = allTags(lang) -%}
+<div class="wrap layout">
+  <main id="obsah" class="main">
+    <header class="page-head">
+      <h1>{{ t.tagsTitle }}</h1>
+      <p class="lead">{{ t.tagsLead }}</p>
+    </header>
+    {%- if tags.length %}
+    <ul class="chips chips-big">
+      {%- for tg in tags %}
+      <li><a class="chip" href="{{ tg.url }}">{{ tg.label }} <span class="count">{{ tg.count }}</span></a></li>
+      {%- endfor %}
+    </ul>
+    {%- else %}
+    <p class="empty">{{ t.noPosts }}</p>
+    {%- endif %}
+  </main>
+</div>

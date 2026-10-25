@@ -1,0 +1,24 @@
+---
+layout: layouts/base.njk
+---
+{%- from "partials/macros.njk" import postList -%}
+{%- set t = ui[lang] -%}
+<div class="wrap layout">
+  <main id="obsah" class="main">
+    <header class="page-head">
+      <h1>{{ ui[A.lang].archiveTitle }}</h1>
+      <p class="lead">{{ t.archiveLead }}</p>
+      <ul class="chips">
+        {%- for s in sectionsOf(lang) %}
+        <li><a class="chip acc-{{ s.accent }}" href="{{ s.url }}">{{ s.title }}</a></li>
+        {%- endfor %}
+      </ul>
+    </header>
+    {%- if A.posts.length %}
+    {{ postList(A.posts, t, lang, true) }}
+    {%- else %}
+    <p class="empty">{{ t.noPosts }}</p>
+    {%- endif %}
+    {% include "partials/pagination.njk" %}
+  </main>
+</div>
