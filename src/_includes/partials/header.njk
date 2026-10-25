@@ -1,0 +1,24 @@
+<header class="site-header">
+  <div class="wrap">
+    <div class="header-top">
+      <a class="brand" href="{{ homeUrl(lang) }}">
+        <span class="brand-name">{{ site.name[lang] }}</span>
+        <small>{{ site.tagline[lang] }}</small>
+      </a>
+      <div class="tools">
+        {% include "partials/lang-switch.njk" %}
+        <button type="button" class="btn" id="theme-toggle" hidden
+          data-auto="{{ t.themeAuto }}" data-light="{{ t.themeLight }}" data-dark="{{ t.themeDark }}">{{ t.themeAuto }}</button>
+      </div>
+    </div>
+    <nav class="primary-nav" aria-label="{{ t.mainNav }}">
+      <ul>
+        {%- for s in sectionsOf(lang) %}
+        <li><a class="acc-{{ s.accent }}" href="{{ s.url }}"{% if s.sectionSlug == sectionSlug and kind != 'home' %} aria-current="true"{% endif %}><span class="num" aria-hidden="true">{{ s.badge }}</span> {{ s.title }}</a></li>
+        {%- endfor %}
+        <li class="nav-extra"><a href="{{ archiveUrl(lang) }}"{% if kind == 'archive' %} aria-current="page"{% endif %}>{{ t.archive }}</a></li>
+        <li class="nav-extra"><a href="{{ tagsUrl(lang) }}"{% if kind == 'tags' or kind == 'tag' %} aria-current="true"{% endif %}>{{ t.tags }}</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>

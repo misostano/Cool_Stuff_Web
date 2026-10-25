@@ -1,0 +1,11 @@
+<ul class="langs" aria-label="{{ t.language }}">
+  {%- for a in links %}
+  <li>
+    {%- if a.lang == lang -%}
+    <span aria-current="true" lang="{{ a.lang }}" title="{{ a.label }}">{{ a.short }}</span>
+    {%- else -%}
+    <a href="{{ a.url }}" hreflang="{{ a.lang }}" lang="{{ a.lang }}" title="{{ a.label }}{% if not a.exact %} – {{ t.langFallback }}{% endif %}">{{ a.short }}</a>
+    {%- endif -%}
+  </li>
+  {%- endfor %}
+</ul>

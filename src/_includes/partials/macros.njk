@@ -1,0 +1,66 @@
+{#- Opakované stavebné prvky: dlaždice, zoznam príspevkov, tagy. -#}
+
+{% macro tile(e, t, lang) %}
+<li>
+  <a class="tile acc-{{ e.accent }}" href="{{ e.url }}">
+    <span class="tile-thumb">
+      {%- if e.tileImage %}
+      <img src="{{ e.tileImage }}" width="480" height="360" alt="" data-decor="1" decoding="async">
+      {%- else %}
+      <span class="tile-ph" aria-hidden="true">{{ e.badge }}</span>
+      {%- endif %}
+    </span>
+    <span class="tile-body">
+      <span class="tile-title">{{ e.title }}</span>
+      {%- if e.description %}
+      <span class="tile-desc">{{ e.description }}</span>
+      {%- endif %}
+      {%- if e.kind != 'page' %}
+      <span class="tile-meta">{{ e.count }} {{ e.count | plural(t.postForms, lang) }}</span>
+      {%- endif %}
+    </span>
+  </a>
+</li>
+{% endmacro %}
+
+{% macro tileGrid(items, t, lang) %}
+<ul class="tiles">
+  {%- for e in items %}
+  {{ tile(e, t, lang) }}
+  {%- endfor %}
+</ul>
+{% endmacro %}
+
+{% macro tagChips(tags, lang) %}
+{%- if tags and tags.length %}
+<ul class="chips">
+  {%- for tg in tags %}
+  <li><a class="chip" href="{{ tagUrl(lang, tg.slug) }}">{{ tg.label }}</a></li>
+  {%- endfor %}
+</ul>
+{%- endif %}
+{% endmacro %}
+
+{% macro postItem(p, t, lang, showWhere) %}
+<li class="post-item acc-{{ p.accent }}">
+  <h3><a href="{{ p.url }}">{{ p.title }}</a></h3>
+  <p class="post-meta">
+    <time datetime="{{ p.date | isoDate }}">{{ p.date | dateFmt(lang) }}</time>
+    {%- if showWhere and p.sectionTitle %}
+    <span class="where">{{ p.sectionTitle }}{% if p.subTitle %} › {{ p.subTitle }}{% endif %}</span>
+    {%- endif %}
+  </p>
+  {%- if p.description %}
+  <p class="post-desc">{{ p.description }}</p>
+  {%- endif %}
+  {{ tagChips(p.tags, lang) }}
+</li>
+{% endmacro %}
+
+{% macro postList(posts, t, lang, showWhere) %}
+<ul class="post-list">
+  {%- for p in posts %}
+  {{ postItem(p, t, lang, showWhere) }}
+  {%- endfor %}
+</ul>
+{% endmacro %}

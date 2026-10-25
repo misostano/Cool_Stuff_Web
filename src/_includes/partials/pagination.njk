@@ -1,0 +1,12 @@
+{#- Stránkovanie archívu. Vyžaduje: A (aktuálna strana archívu), t. -#}
+{%- if A and A.total > 1 %}
+<nav class="pager" aria-label="{{ t.pagination }}">
+  {%- if A.prevUrl %}
+  <a class="btn" rel="prev" href="{{ A.prevUrl }}">← {{ t.pagePrev }}</a>
+  {%- endif %}
+  <span class="pager-info">{{ t.pageOf | fmt({ n: A.number, total: A.total }) }}</span>
+  {%- if A.nextUrl %}
+  <a class="btn" rel="next" href="{{ A.nextUrl }}">{{ t.pageNext }} →</a>
+  {%- endif %}
+</nav>
+{%- endif %}

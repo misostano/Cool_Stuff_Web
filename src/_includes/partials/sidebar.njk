@@ -1,0 +1,29 @@
+{#- Miestna navigácia sekcie (ľavý stĺpec na veľkých obrazovkách, pod obsahom na mobile). -#}
+{%- if me and me.section %}
+{%- set sec = me.section %}
+<nav class="aside acc-{{ me.accent }}" aria-label="{{ t.sectionNav }}">
+  <h2>{{ t.inThisSection }}</h2>
+  <ul>
+    <li>
+      <a href="{{ sec.url }}"{% if me.kind == 'section' %} aria-current="page"{% endif %}>{{ sec.title }}</a>
+      <ul>
+        {%- for s in subsectionsOf(lang, sec.sectionSlug) %}
+        <li>
+          <a href="{{ s.url }}"{% if me.kind == 'subsection' and me.subSlug == s.subSlug %} aria-current="page"{% endif %}>{{ s.title }} <span class="count">{{ s.count }}</span></a>
+          {%- if me.subSlug == s.subSlug and (me.kind == 'subsection' or me.kind == 'post') %}
+          <ul>
+            {%- for p in postsInSub(lang, sec.sectionSlug, s.subSlug) %}
+            <li><a href="{{ p.url }}"{% if p.url == page.url %} aria-current="page"{% endif %}>{{ p.title }}</a></li>
+            {%- endfor %}
+          </ul>
+          {%- endif %}
+        </li>
+        {%- endfor %}
+        {%- for p in postsDirect(lang, sec.sectionSlug) %}
+        <li><a href="{{ p.url }}"{% if p.url == page.url %} aria-current="page"{% endif %}>{{ p.title }}</a></li>
+        {%- endfor %}
+      </ul>
+    </li>
+  </ul>
+</nav>
+{%- endif %}
