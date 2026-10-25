@@ -1,0 +1,21 @@
+{
+  "name": "moj-web",
+  "version": "0.2.0",
+  "private": true,
+  "description": "Osobný viacjazyčný blog (SK/EN) generovaný nástrojom Eleventy, nasadzovaný na GitHub Pages.",
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "start": "eleventy --serve",
+    "build": "node scripts/clean.js && eleventy && node scripts/verify-output.js",
+    "clean": "node scripts/clean.js",
+    "check:contrast": "node scripts/check-contrast.js",
+    "novy-prispevok": "node scripts/new-post.js"
+  },
+  "devDependencies": {
+    "@11ty/eleventy": "^3.1.7",
+    "html-minifier-terser": "^7.2.0"
+  }
+}
